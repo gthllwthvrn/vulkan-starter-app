@@ -12,7 +12,6 @@
 #include <vulkan/vulkan.h>
 #include <vk_mem_alloc.h>
 
-// ---------- Минимальная математика ----------
 
 struct Vec3 {
     float x = 0, y = 0, z = 0;
@@ -121,7 +120,6 @@ struct UniformBufferObject {
     float colorMultiplier[4];
 };
 
-// ---------- Состояние приложения ----------
 
 namespace {
 
@@ -145,15 +143,12 @@ namespace {
     VkBuffer       uniformBuffer = VK_NULL_HANDLE;
     VmaAllocation  uniformBufferAlloc = VK_NULL_HANDLE;
 
-    // НЕ используем vmaUnmapMemory — эта память замаплена на всё время жизни.
-    // Просто храним указатели, полученные при создании.
     Vertex* vertexBufferMapped = nullptr;
     uint32_t* indexBufferMapped = nullptr;
     UniformBufferObject* uniformBufferMapped = nullptr;
 
     uint32_t indexCount = 0;
 
-    // UI
     bool  usePerspective = true;
     float position[3] = { 0.f, 0.f, 0.f };
     float rotation[3] = { 0.f, 0.f, 0.f };
@@ -165,7 +160,6 @@ namespace {
     float animSpeed = 1.0f;
     float animRadius = 2.0f;
 
-    // ---------- Утилиты ----------
 
     std::vector<char> readFile(const std::string& path) {
         std::ifstream file(path, std::ios::ate | std::ios::binary);
@@ -191,7 +185,6 @@ namespace {
         return mod;
     }
 
-    // ---------- Сфера ----------
 
     void generateSphere(std::vector<Vertex>& vertices, std::vector<uint32_t>& indices,
         int stacks, int slices) {
@@ -231,10 +224,6 @@ namespace {
         }
     }
 
-    // ---------- Буферы ----------
-    // Создаём сразу с маппингом. VMA сама держит маппинг на всё время жизни буфера,
-    // а при vmaDestroyBuffer — освобождает. Никаких vmaMapMemory/vmaUnmapMemory не нужно.
-
     void createMappedBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
         VkBuffer& outBuffer, VmaAllocation& outAlloc,
         void** outMapped) {
@@ -262,7 +251,6 @@ namespace {
         if (outMapped) *outMapped = info.pMappedData;
     }
 
-    // ---------- Pipeline ----------
 
     bool createPipeline() {
         auto& ctx = graphics::internal::context;
@@ -450,16 +438,13 @@ namespace {
         return true;
     }
 
-} // namespace
-
-// ---------- Публичные функции ----------
+} 
 
 namespace application {
 
     bool initialize() {
         auto& ctx = graphics::internal::context;
 
-        // Сброс на случай повторного запуска в одной сессии отладки
         vertexBuffer = VK_NULL_HANDLE;  vertexBufferAlloc = VK_NULL_HANDLE;
         indexBuffer = VK_NULL_HANDLE;  indexBufferAlloc = VK_NULL_HANDLE;
         uniformBuffer = VK_NULL_HANDLE;  uniformBufferAlloc = VK_NULL_HANDLE;
@@ -475,7 +460,6 @@ namespace application {
         VkDeviceSize vbSize = sizeof(Vertex) * vertices.size();
         VkDeviceSize ibSize = sizeof(uint32_t) * indices.size();
 
-        // --- Vertex buffer ---
         {
             void* mapped = nullptr;
             createMappedBuffer(vbSize, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
@@ -488,7 +472,6 @@ namespace application {
             std::memcpy(vertexBufferMapped, vertices.data(), (size_t)vbSize);
         }
 
-        // --- Index buffer ---
         {
             void* mapped = nullptr;
             createMappedBuffer(ibSize, VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
@@ -501,7 +484,6 @@ namespace application {
             std::memcpy(indexBufferMapped, indices.data(), (size_t)ibSize);
         }
 
-        // --- Uniform buffer ---
         {
             void* mapped = nullptr;
             createMappedBuffer(sizeof(UniformBufferObject), VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
@@ -533,7 +515,6 @@ namespace application {
         if (descriptorPool) { vkDestroyDescriptorPool(ctx.device, descriptorPool, nullptr); descriptorPool = VK_NULL_HANDLE; }
         if (descriptorSetLayout) { vkDestroyDescriptorSetLayout(ctx.device, descriptorSetLayout, nullptr); descriptorSetLayout = VK_NULL_HANDLE; }
 
-        // НИКАКОГО vmaUnmapMemory. VMA сама снимает маппинг при vmaDestroyBuffer.
 
         if (vertexBuffer != VK_NULL_HANDLE) {
             vmaDestroyBuffer(ctx.allocator, vertexBuffer, vertexBufferAlloc);
@@ -682,4 +663,4 @@ namespace application {
         vkEndCommandBuffer(cmd);
     }
 
-} // namespace application
+} 

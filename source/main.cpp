@@ -66,7 +66,6 @@ int main() {
 
     if (!application::initialize()) {
         MessageBoxA(nullptr, "application::initialize failed", "Error", MB_OK);
-        // всё равно вызовем shutdown, чтобы корректно освободить всё, что успело создаться
         application::shutdown();
         graphics::internal::shutdown();
         ImGui_ImplGlfw_Shutdown();
