@@ -12,7 +12,11 @@
 			"inherits": "common",
 			"binaryDir": "build-debug",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Debug"
+				"CMAKE_BUILD_TYPE": "Debug",
+				"Vulkan_INCLUDE_DIR": "C:/VulkanSDK/1.4.357.0/Include",
+				"Vulkan_LIBRARY": "C:/VulkanSDK/1.4.357.0/Lib/vulkan-1.lib",
+				"Vulkan_GLSLC_EXECUTABLE": "C:/VulkanSDK/1.4.357.0/Bin/glslc.exe",
+				"Vulkan_GLSLANGVALIDATOR_EXECUTABLE": "C:/VulkanSDK/1.4.357.0/Bin/glslangValidator.exe"
 			}
 		},
 		{
@@ -20,7 +24,11 @@
 			"inherits": "common",
 			"binaryDir": "build-release",
 			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
+				"CMAKE_BUILD_TYPE": "Release",
+				"Vulkan_INCLUDE_DIR": "C:/VulkanSDK/1.4.357.0/Include",
+				"Vulkan_LIBRARY": "C:/VulkanSDK/1.4.357.0/Lib/vulkan-1.lib",
+				"Vulkan_GLSLC_EXECUTABLE": "C:/VulkanSDK/1.4.357.0/Bin/glslc.exe",
+				"Vulkan_GLSLANGVALIDATOR_EXECUTABLE": "C:/VulkanSDK/1.4.357.0/Bin/glslangValidator.exe"
 			}
 		},
 		{
