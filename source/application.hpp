@@ -4,10 +4,9 @@
 
 namespace application {
 
-bool initialize();
-void shutdown();
+	bool initialize();
+	void shutdown();
+	void update(double time);
+	void render(const graphics::internal::FrameData& fd);
 
-void update(double time);
-void render(const graphics::internal::FrameData& fd);
-
-} // namespace application
+}
